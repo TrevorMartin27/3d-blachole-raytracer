@@ -1,6 +1,7 @@
 #include "types/image.hpp"
 
 #include <string>
+#include <stdexcept>
 
 #include <cstdint>
 #include <cassert>
