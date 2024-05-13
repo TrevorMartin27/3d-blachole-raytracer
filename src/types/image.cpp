@@ -8,28 +8,56 @@
 
 #include "stb/stb_image_write.h"
 
+#include "types/color.hpp"
+
+Image::Pixel Image::Pixel::FromColor(Color color) noexcept {
+	assert(color.red >= 0.0f);
+	assert(color.red <= 1.0f);
+
+	assert(color.green >= 0.0f);
+	assert(color.green <= 1.0f);
+
+	assert(color.blue >= 0.0f);
+	assert(color.blue <= 1.0f);
+
+	return Image::Pixel {
+		static_cast<std::uint8_t>(color.red * 0xff),
+		static_cast<std::uint8_t>(color.green * 0xff),
+		static_cast<std::uint8_t>(color.blue * 0xff),
+		0xff
+	};
+}
+
 Image::Pixel Image::Pixel::Black() noexcept {
-	return Image::Pixel { 0x00, 0x00, 0x00, 0xff };
+	return Image::Pixel::FromColor(Color::Black());
 }
 
 Image::Pixel Image::Pixel::White() noexcept {
-	return Image::Pixel { 0xff, 0xff, 0xff, 0xff };
+	return Image::Pixel::FromColor(Color::White());
 }
 
 Image::Pixel Image::Pixel::Red() noexcept {
-	return Image::Pixel { 0xff, 0x00, 0x00, 0xff };
+	return Image::Pixel::FromColor(Color::Red());
 }
 
 Image::Pixel Image::Pixel::Green() noexcept {
-	return Image::Pixel { 0x00, 0xff, 0x00, 0xff };
+	return Image::Pixel::FromColor(Color::Green());
 }
 
 Image::Pixel Image::Pixel::Blue() noexcept {
-	return Image::Pixel { 0x00, 0x00, 0xff, 0xff };
+	return Image::Pixel::FromColor(Color::Blue());
 }
 
 Image::Pixel Image::Pixel::Magenta() noexcept {
-	return Image::Pixel { 0xff, 0x00, 0xff, 0xff };
+	return Image::Pixel::FromColor(Color::Magenta());
+}
+
+Image::Pixel Image::Pixel::Cyan() noexcept {
+	return Image::Pixel::FromColor(Color::Cyan());
+}
+
+Image::Pixel Image::Pixel::Yellow() noexcept {
+	return Image::Pixel::FromColor(Color::Yellow());
 }
 
 Image::Pixel Image::Pixel::Default() noexcept {

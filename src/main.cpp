@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "types/color.hpp"
 #include "types/image.hpp"
 
 int main(int argc, const char* argv[]) {
@@ -9,14 +10,17 @@ int main(int argc, const char* argv[]) {
 
 	for (unsigned int y = 0; y < output.getHeight(); y++) {
 		for (unsigned int x = 0; x < output.getWidth(); x++) {
-			output.at(x, y) =
+			output.at(x, y) = Image::Pixel::FromColor(
 				((x + y) % 2 == 0)
-					? Image::Pixel::Black()
-					: Image::Pixel::White();
+					? Color::Black()
+					: Color::Magenta()
+			);
 		}
 	}
 
 	output.save<Image::Format::PNG>("./output.png");
+
+	std::cout << "[DONE]\n";
 
 	return 0;
 }

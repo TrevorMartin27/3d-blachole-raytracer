@@ -4,6 +4,8 @@
 
 #include <cstdint>
 
+#include "types/color.hpp"
+
 // NOTE(Trevor): Personally, I dislike using private members and
 // getters/setters unless actively preventing harm, so we may just
 // change this to a struct.
@@ -16,6 +18,8 @@ public:
 		std::uint8_t blue;
 		std::uint8_t alpha;
 
+		static Pixel FromColor(Color color) noexcept;
+
 		static Pixel Black() noexcept;
 		static Pixel White() noexcept;
 
@@ -24,6 +28,8 @@ public:
 		static Pixel Blue() noexcept;
 
 		static Pixel Magenta() noexcept;
+		static Pixel Cyan() noexcept;
+		static Pixel Yellow() noexcept;
 
 		static Pixel Default() noexcept;
 	};

@@ -13,6 +13,7 @@ set(FILES ${FILES}
 	src/types/vec.cpp
 	src/types/point.cpp
 	src/types/ray.cpp
+	src/types/color.cpp
 	src/types/image.cpp
 
 	src/main.cpp
