@@ -8,9 +8,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(FILES ${FILES}
+	src/stb.cpp
+
 	src/types/vec.cpp
 	src/types/point.cpp
 	src/types/ray.cpp
+	src/types/image.cpp
 
 	src/main.cpp
 )
