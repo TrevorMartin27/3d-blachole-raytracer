@@ -8,12 +8,18 @@ struct Vec2 {
 	Vec2 operator+(const Vec2& rhs) const noexcept;
 	Vec2 operator-(const Vec2& rhs) const noexcept;
 
+	Vec2& operator+=(const Vec2& rhs) noexcept;
+	Vec2& operator-=(const Vec2& rhs) noexcept;
+
 	// Vector Negation
 	Vec2 operator-() const noexcept;
 
 	// Vector Scaling
 	Vec2 operator*(const float rhs) const noexcept;
 	Vec2 operator/(const float rhs) const noexcept;
+
+	Vec2& operator*=(const float rhs) noexcept;
+	Vec2& operator/=(const float rhs) noexcept;
 
 	// Dot Product
 	float operator*(const Vec2& rhs) const noexcept;
@@ -35,12 +41,18 @@ struct Vec3 {
 	Vec3 operator+(const Vec3& rhs) const noexcept;
 	Vec3 operator-(const Vec3& rhs) const noexcept;
 
+	Vec3& operator+=(const Vec3& rhs) noexcept;
+	Vec3& operator-=(const Vec3& rhs) noexcept;
+
 	// Vector Negation
 	Vec3 operator-() const noexcept;
 
 	// Vector Scaling
 	Vec3 operator*(const float rhs) const noexcept;
 	Vec3 operator/(const float rhs) const noexcept;
+
+	Vec3& operator*=(const float rhs) noexcept;
+	Vec3& operator/=(const float rhs) noexcept;
 
 	// Dot Product
 	float operator*(const Vec3& rhs) const noexcept;

@@ -18,6 +18,24 @@ Vec2 Vec2::operator-(const Vec2& rhs) const noexcept {
 	return *this + (-rhs);
 }
 
+Vec2& Vec2::operator+=(const Vec2& rhs) noexcept {
+	// TODO: See if we can do this cleaner
+
+	this->x += rhs.x;
+	this->y += rhs.y;
+
+	return *this;
+}
+
+Vec2& Vec2::operator-=(const Vec2& rhs) noexcept {
+	// TODO: See if we can do this cleaner
+
+	this->x -= rhs.x;
+	this->y -= rhs.y;
+
+	return *this;
+}
+
 Vec2 Vec2::operator-() const noexcept {
 	return Vec2 {
 		-this->x,
@@ -37,6 +55,24 @@ Vec2 Vec2::operator/(const float rhs) const noexcept {
 		this->x / rhs,
 		this->y / rhs
 	};
+}
+
+Vec2& Vec2::operator*=(const float rhs) noexcept {
+	// TODO: See if we can do this cleaner
+
+	this->x *= rhs;
+	this->y *= rhs;
+
+	return *this;
+}
+
+Vec2& Vec2::operator/=(const float rhs) noexcept {
+	// TODO: See if we can do this cleaner
+
+	this->x /= rhs;
+	this->y /= rhs;
+
+	return *this;
 }
 
 float Vec2::operator*(const Vec2& rhs) const noexcept {
@@ -84,6 +120,26 @@ Vec3 Vec3::operator-(const Vec3& rhs) const noexcept {
 	return *this + (-rhs);
 }
 
+Vec3& Vec3::operator+=(const Vec3& rhs) noexcept {
+	// TODO: See if we can do this cleaner
+
+	this->x += rhs.x;
+	this->y += rhs.y;
+	this->z += rhs.z;
+
+	return *this;
+}
+
+Vec3& Vec3::operator-=(const Vec3& rhs) noexcept {
+	// TODO: See if we can do this cleaner
+
+	this->x -= rhs.x;
+	this->y -= rhs.y;
+	this->z -= rhs.z;
+
+	return *this;
+}
+
 Vec3 Vec3::operator-() const noexcept {
 	return Vec3 {
 		-this->x,
@@ -106,6 +162,26 @@ Vec3 Vec3::operator/(const float rhs) const noexcept {
 		this->y / rhs,
 		this->z / rhs
 	};
+}
+
+Vec3& Vec3::operator*=(const float rhs) noexcept {
+	// TODO: See if we can do this cleaner
+
+	this->x *= rhs;
+	this->y *= rhs;
+	this->z *= rhs;
+
+	return *this;
+}
+
+Vec3& Vec3::operator/=(const float rhs) noexcept {
+	// TODO: See if we can do this cleaner
+
+	this->x /= rhs;
+	this->y /= rhs;
+	this->y /= rhs;
+
+	return *this;
 }
 
 float Vec3::operator*(const Vec3& rhs) const noexcept {
