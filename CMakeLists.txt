@@ -16,6 +16,8 @@ set(FILES ${FILES}
 	src/types/color.cpp
 	src/types/image.cpp
 
+	src/hittable/sphere.cpp
+
 	src/main.cpp
 )
 
