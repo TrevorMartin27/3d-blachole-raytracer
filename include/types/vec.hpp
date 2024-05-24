@@ -26,10 +26,13 @@ struct Vec2 {
 
 	// Length Operations
 	float magnitude() const noexcept;
-	Vec2 normalize() const noexcept;
+	Vec2 normalized() const noexcept;
 
 	// Cross Product
 	static Vec2 Cross(const Vec2& vector0) noexcept;
+
+	// Angle Between Vectors
+	static float Angle(const Vec2& vector0, const Vec2& vector1) noexcept;
 };
 
 struct Vec3 {
@@ -59,8 +62,11 @@ struct Vec3 {
 
 	// Length Operations
 	float magnitude() const noexcept;
-	Vec3 normalize() const noexcept;
+	Vec3 normalized() const noexcept;
 
 	// Cross Product
 	static Vec3 Cross(const Vec3& vector0, const Vec3& vector1) noexcept;
+
+	// Angle Between Vectors
+	static float Angle(const Vec3& vector0, const Vec3& vector1) noexcept;
 };

@@ -18,8 +18,16 @@ struct Point2 {
 	Point2 operator+(const Vec2& rhs) const noexcept;
 	Point2 operator-(const Vec2& rhs) const noexcept;
 
+	Point2& operator+=(const Vec2& rhs) noexcept;
+	Point2& operator-=(const Vec2& rhs) noexcept;
+
 	// Finding the transition vector between two points
 	Vec2 operator-(const Point2& rhs) const noexcept;
+
+	// Convert to a vector
+	Vec2 vec() const noexcept;
+
+	static Point2 Origin() noexcept;
 };
 
 // NOTE: Forward declaration for compilation speed.
@@ -36,6 +44,14 @@ struct Point3 {
 	Point3 operator+(const Vec3& rhs) const noexcept;
 	Point3 operator-(const Vec3& rhs) const noexcept;
 
+	Point3& operator+=(const Vec3& rhs) noexcept;
+	Point3& operator-=(const Vec3& rhs) noexcept;
+
 	// Finding the transition vector between two points
 	Vec3 operator-(const Point3& rhs) const noexcept;
+
+	// Convert to a vector
+	Vec3 vec() const noexcept;
+
+	static Point3 Origin() noexcept;
 };

@@ -88,7 +88,7 @@ float Vec2::magnitude() const noexcept {
 	return std::sqrt(*this * *this);
 }
 
-Vec2 Vec2::normalize() const noexcept {
+Vec2 Vec2::normalized() const noexcept {
 	// TODO: Make sure THIS is inlining sanely
 
 	return *this / this->magnitude();
@@ -102,6 +102,12 @@ Vec2 Vec2::Cross(const Vec2& vector0) noexcept {
 		vector0.y,
 		-vector0.x
 	};
+}
+
+float Vec2::Angle(const Vec2& vector0, const Vec2& vector1) noexcept {
+	const float dot = vector0 * vector1;
+
+	return std::acos(dot / (vector0.magnitude() * vector1.magnitude()));
 }
 
 // -------------------------------------------------------------------- //
@@ -198,7 +204,7 @@ float Vec3::magnitude() const noexcept {
 	return std::sqrt(*this * *this);
 }
 
-Vec3 Vec3::normalize() const noexcept {
+Vec3 Vec3::normalized() const noexcept {
 	// TODO: Make sure THIS is inlining sanely
 
 	return *this / this->magnitude();
@@ -214,4 +220,10 @@ Vec3 Vec3::Cross(const Vec3& vector0, const Vec3& vector1) noexcept {
 		(vector0.z * vector1.x) - (vector0.x * vector1.z), // Flipped
 		(vector0.x * vector1.y) - (vector0.y * vector1.x),
 	};
+}
+
+float Vec3::Angle(const Vec3& vector0, const Vec3& vector1) noexcept {
+	const float dot = vector0 * vector1;
+
+	return std::acos(dot / (vector0.magnitude() * vector1.magnitude()));
 }
