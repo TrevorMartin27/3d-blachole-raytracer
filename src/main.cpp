@@ -1,5 +1,7 @@
 #include <iostream>
+#include <vector>
 #include <optional>
+#include <limits>
 
 #include <cmath>
 
@@ -11,6 +13,8 @@
 #include "types/image.hpp"
 
 #include "hittable/sphere.hpp"
+#include "hittable/plane.hpp"
+#include "hittable/group.hpp"
 
 const float G = 1.0f;
 const float c = 1.0f;
@@ -18,10 +22,35 @@ const float M = 1.0f;
 
 const float SchwarzschildRadius = (2.0f * G * M) / (c * c);
 
-const float IntersectionThreshold = 0.01f;
+const float IntersectionThreshold = 0.001f;
 const float MaxDistance = 100.0f;
-const float DeltaPhi = 0.1f;
+const float DeltaPhi = 0.01f;
 const unsigned int MaxIterations = 1000;
+
+struct Scene : public Hittable {
+	Group<Sphere> spheres;
+	Group<Plane> planes;
+
+	virtual float distance(const Point3& point) const noexcept {
+		float min_distance = std::numeric_limits<float>::max();
+
+		// NOTE: I hate this, but I'm a C programmer. Improve.
+#define REFINE_DISTANCE(C) \
+		{ \
+			const float distance = this->C.distance(point); \
+			if (distance < min_distance) { \
+				min_distance = distance; \
+			} \
+		}
+
+		REFINE_DISTANCE(spheres);
+		REFINE_DISTANCE(planes);
+
+#undef REFINE_DISTANCE
+
+		return min_distance;
+	}
+};
 
 struct Hit {
 	bool captured;
@@ -75,6 +104,8 @@ std::optional<Hit> march(Ray ray, const T& object) {
 		}
 
 		// Move through the safe area
+		// NOTE (tjm): This is not correct. Needed to add thickness
+		// to planes.
 		float local_distance_traveled;
 		for (
 			local_distance_traveled = 0.0f;
@@ -135,12 +166,19 @@ int main(int argc, const char* argv[]) {
 
 	Image output = Image::Create(512, 512); // 512, 512
 
-	const Sphere object = Sphere {
-		Point3 { 4.0f, 0.0f, 0.0f },
-		3.0f
-	};
+	Scene scene;
+	scene.spheres.children.emplace_back(
+		Point3 { 2.0f, 0.0f, -3.0f },
+		1.0f
+	);
+	scene.planes.children.emplace_back(
+		Point3 { 0.0f, 3.0f, 0.0f },
+		Vec3 { 0.0f, 1.0f, 0.0f },
+		0.25f
+	);
 
 	std::cerr << "[START]\n";
+	std::cerr << "\tSchwarzchild Radius: " << SchwarzschildRadius << "\n";
 
 	Ray ray = {
 		Point3 {
@@ -152,13 +190,14 @@ int main(int argc, const char* argv[]) {
 		}
 	};
 
+	// BUG: Output seems to be horizontally and vertically mirrored
 	for (unsigned int y = 0; y < output.getHeight(); y++) {
 		ray.direction.y = (static_cast<float>(y) / static_cast<float>(output.getHeight())) * 2.0f - 1.0f;
 
 		for (unsigned int x = 0; x < output.getWidth(); x++) {
 			ray.direction.x = (static_cast<float>(x) / static_cast<float>(output.getWidth())) * 2.0f - 1.0f;
 
-			const auto hit = march(ray, object);
+			const auto hit = march(ray, scene);
 
 			output.at(x, y) = Image::Pixel::FromColor(
 				hit.has_value()

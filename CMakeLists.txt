@@ -17,6 +17,7 @@ set(FILES ${FILES}
 	src/types/image.cpp
 
 	src/hittable/sphere.cpp
+	src/hittable/plane.cpp
 
 	src/main.cpp
 )
