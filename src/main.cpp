@@ -25,7 +25,7 @@ const float SchwarzschildRadius = (2.0f * G * M) / (c * c);
 const float IntersectionThreshold = 0.001f;
 const float MaxDistance = 100.0f;
 const float DeltaPhi = 0.01f;
-const unsigned int MaxIterations = 1000;
+const unsigned int MaxIterations = 5000;
 
 struct Scene : public Hittable {
 	Group<Sphere> spheres;
@@ -149,6 +149,8 @@ std::optional<Hit> march(Ray ray, const T& object) {
 			iterations++;
 
 			if (iterations > MaxIterations) {
+				std::cerr << "[WARN] Max iterations hit.\n";
+
 				return std::nullopt; // IDK
 			}
 		}
