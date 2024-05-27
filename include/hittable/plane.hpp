@@ -15,7 +15,8 @@ struct Plane : public Hittable {
 
 	Plane(Point3 center, Vec3 normal, float thickness) noexcept;
 
-	virtual float distance(const Point3& point) const noexcept;
+	virtual std::optional<Hittable::Distance>
+		distance(const Point3& point) const noexcept override final;
 
 	static Plane FromPoints(
 		const Point3& a, const Point3& b, const Point3& c,

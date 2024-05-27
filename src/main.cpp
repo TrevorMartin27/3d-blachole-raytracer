@@ -31,14 +31,16 @@ struct Scene : public Hittable {
 	Group<Sphere> spheres;
 	Group<Plane> planes;
 
-	virtual float distance(const Point3& point) const noexcept {
-		float min_distance = std::numeric_limits<float>::max();
+	virtual std::optional<Hittable::Distance> distance(const Point3& point) const noexcept {
+		std::optional<Hittable::Distance> min_distance;
 
 		// NOTE: I hate this, but I'm a C programmer. Improve.
 #define REFINE_DISTANCE(C) \
 		{ \
-			const float distance = this->C.distance(point); \
-			if (distance < min_distance) { \
+			const auto distance = this->C.distance(point); \
+			if (distance && \
+				(!min_distance || distance.value() < min_distance.value()) \
+			) { \
 				min_distance = distance; \
 			} \
 		}
@@ -73,12 +75,17 @@ Hit march(Ray ray, const T& object) {
 	float phi = 0.0f;
 	for (float distance_traveled = 0.0f; distance_traveled < MaxDistance;) {
 		// Find the distance we can savely travel
-		const float distance_to_object =
+		const auto distance =
 			object.distance(
 				Point3::Origin()
 					+ Bx * (std::cos(phi) / u)
 					+ By * (std::sin(phi) / u)
 			);
+
+		const float distance_to_object =
+			distance
+				? distance.value().distance
+				: std::numeric_limits<float>::max();
 
 		// Not handling NaNs right now (only once a frame)
 		if (std::isnan(distance_to_object)) {

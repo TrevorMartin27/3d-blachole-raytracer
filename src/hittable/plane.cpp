@@ -5,15 +5,14 @@
 Plane::Plane(Point3 center, Vec3 normal, float thickness) noexcept
 	: center(center), normal(normal), thickness(thickness) { }
 
-float Plane::distance(const Point3& point) const noexcept {
+std::optional<Hittable::Distance> Plane::distance(const Point3& point) const noexcept {
 	// NOTE: Via the notes for Section 1.3
 
 	const Vec3 PS = point - this->center;
 
-	return std::max(
-		std::abs(PS * this->normal) - this->thickness,
-		0.0f
-	);
+	return Hittable::Distance {
+		std::abs(PS * this->normal) - this->thickness
+	};
 }
 
 Plane Plane::FromPoints(const Point3& a, const Point3& b, const Point3& c, float thickness) noexcept {

@@ -8,6 +8,8 @@ Sphere::Sphere(Point3 center, float radius) noexcept
 	: center(center), radius(radius) { }
 
 // TODO: I would like to have a distance squared function
-float Sphere::distance(const Point3& point) const noexcept {
-	return (this->center - point).magnitude() - this->radius;
+std::optional<Hittable::Distance> Sphere::distance(const Point3& point) const noexcept {
+	return Hittable::Distance {
+		(this->center - point).magnitude() - this->radius
+	};
 }

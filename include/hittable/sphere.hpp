@@ -12,5 +12,6 @@ struct Sphere : public Hittable {
 	// to optimize what would otherwise be a virtual function
 	// call (if the object is known).
 
-	virtual float distance(const Point3& point) const noexcept override final;
+	virtual std::optional<Hittable::Distance>
+		distance(const Point3& point) const noexcept override final;
 };
