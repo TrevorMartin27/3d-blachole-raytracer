@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <optional>
 #include <limits>
 
 #include <cmath>
@@ -11,6 +10,7 @@
 
 #include "types/color.hpp"
 #include "types/image.hpp"
+#include "types/hit.hpp"
 
 #include "hittable/sphere.hpp"
 #include "hittable/plane.hpp"
@@ -52,15 +52,8 @@ struct Scene : public Hittable {
 	}
 };
 
-struct Hit {
-	bool captured;
-
-	float distance_traveled;
-	unsigned int step_count;
-};
-
 template<typename T>
-std::optional<Hit> march(Ray ray, const T& object) {
+Hit march(Ray ray, const T& object) {
 	// Setup the basis vectors (only care about Bx and By - horizontal plane)
 	const auto Bx = ray.origin.vec().normalized();
 	const auto Bz = Vec3::Cross(Bx, ray.direction).normalized();
@@ -91,13 +84,12 @@ std::optional<Hit> march(Ray ray, const T& object) {
 		if (std::isnan(distance_to_object)) {
 			std::cout << "NAN\n";
 
-			return std::nullopt;
+			return HitType::Miss {};
 		}
 
 		// Check if we hit an object (point very close)
 		if (distance_to_object < IntersectionThreshold) {
-			return Hit {
-				false,
+			return HitType::Hit {
 				distance_traveled,
 				step_count
 			};
@@ -126,8 +118,7 @@ std::optional<Hit> march(Ray ray, const T& object) {
 
 				// Check if the point is in the inescapable radius
 				if (d < SchwarzschildRadius) {
-					return Hit {
-						true,
+					return HitType::Captured {
 						distance_traveled,
 						step_count
 					};
@@ -151,7 +142,7 @@ std::optional<Hit> march(Ray ray, const T& object) {
 			if (iterations > MaxIterations) {
 				std::cerr << "[WARN] Max iterations hit.\n";
 
-				return std::nullopt; // IDK
+				return HitType::Miss {};
 			}
 		}
 
@@ -160,7 +151,7 @@ std::optional<Hit> march(Ray ray, const T& object) {
 		step_count++;
 	}
 
-	return std::nullopt;
+	return HitType::Miss {};
 }
 
 int main(int argc, const char* argv[]) {
@@ -202,11 +193,13 @@ int main(int argc, const char* argv[]) {
 			const auto hit = march(ray, scene);
 
 			output.at(x, y) = Image::Pixel::FromColor(
-				hit.has_value()
-					? hit.value().captured
+				std::holds_alternative<HitType::Miss>(hit)
+					? Color::Blue()
+					: std::holds_alternative<HitType::Captured>(hit)
 						? Color::Black()
-						: Color::Red()
-					: Color::Blue()
+						: std::holds_alternative<HitType::Hit>(hit)
+							? Color::Red()
+							: Color::Magenta() // Should never appear
 			);
 		}
 
